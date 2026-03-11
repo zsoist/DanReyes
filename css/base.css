@@ -62,41 +62,9 @@ ul, ol {
   border-radius: var(--radius-sm);
 }
 
-/* --- Typography Utilities --- */
-.text-xs      { font-size: var(--text-xs); }
-.text-sm      { font-size: var(--text-sm); }
-.text-base    { font-size: var(--text-base); }
-.text-md      { font-size: var(--text-md); }
-.text-lg      { font-size: var(--text-lg); }
-.text-xl      { font-size: var(--text-xl); }
-.text-2xl     { font-size: var(--text-2xl); }
-.text-3xl     { font-size: var(--text-3xl); }
-.text-4xl     { font-size: var(--text-4xl); }
-
-.text-secondary { color: var(--color-text-secondary); }
-.text-tertiary  { color: var(--color-text-tertiary); }
-
-.font-medium   { font-weight: var(--weight-medium); }
-.font-semibold { font-weight: var(--weight-semibold); }
-
-.tracking-tight  { letter-spacing: var(--tracking-tight); }
-.tracking-wide   { letter-spacing: var(--tracking-wide); }
-.tracking-wider  { letter-spacing: var(--tracking-wider); }
-
-.leading-tight  { line-height: var(--leading-tight); }
-.leading-snug   { line-height: var(--leading-snug); }
-
-.mono { font-family: var(--font-mono); }
-
 /* --- Layout --- */
 .container {
   max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-}
-
-.container-sm {
-  max-width: var(--max-width-sm);
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
@@ -109,12 +77,15 @@ ul, ol {
   padding: var(--space-20) 0;
 }
 
-/* --- Dividers --- */
-.divider {
-  height: 1px;
-  background: var(--color-border);
-  border: none;
-  margin: var(--space-16) 0;
+/* Desktop: offset main content for side rail */
+@media (min-width: 1024px) {
+  .main-content,
+  .footer {
+    padding-left: var(--side-rail-width);
+  }
+  .nav-inner {
+    margin-left: var(--side-rail-width);
+  }
 }
 
 /* --- Screen reader only --- */
@@ -132,7 +103,7 @@ ul, ol {
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
