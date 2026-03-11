@@ -372,11 +372,12 @@
   font-size: clamp(2.4rem, 5.5vw, 5rem);
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
   max-width: 1100px;
   margin-bottom: var(--space-8);
   opacity: 0;
   animation: heroStatementIn 1.2s var(--ease-premium) 0.3s forwards;
+  transition: color 0.35s var(--ease-out);
 }
 
 /* Name always highlighted — fully white for readability */
@@ -386,31 +387,51 @@
   font-style: italic;
 }
 
-/* Keyword highlights — dim by default, lit on hover with unique colors.
+/* Keyword highlights — colored by default, dim surrounding text on hover.
    No font-weight change on hover to prevent layout shift / text reflow. */
 .hero-keyword {
-  color: rgba(255, 255, 255, 0.13);
   font-style: italic;
   cursor: default;
   transition: color 0.35s var(--ease-out), text-shadow 0.35s var(--ease-out);
 }
 
-.hero-keyword.kw-green:hover,
-.hero-keyword.kw-green.active {
+.hero-keyword.kw-green  { color: #34d399; }
+.hero-keyword.kw-blue   { color: #818cf8; }
+.hero-keyword.kw-pink   { color: #f472b6; }
+
+/* When any keyword is hovered, the whole statement dims… */
+.hero-statement.hero-dimmed {
+  color: rgba(255, 255, 255, 0.25);
+  transition: color 0.35s var(--ease-out);
+}
+
+/* …non-hovered keywords also dim */
+.hero-dimmed .hero-keyword {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* …but the hovered keyword stays vivid */
+.hero-dimmed .hero-keyword.kw-green:hover,
+.hero-dimmed .hero-keyword.kw-green.active {
   color: #34d399;
   text-shadow: 0 0 60px rgba(52, 211, 153, 0.15);
 }
 
-.hero-keyword.kw-blue:hover,
-.hero-keyword.kw-blue.active {
+.hero-dimmed .hero-keyword.kw-blue:hover,
+.hero-dimmed .hero-keyword.kw-blue.active {
   color: #818cf8;
   text-shadow: 0 0 60px rgba(129, 140, 248, 0.15);
 }
 
-.hero-keyword.kw-pink:hover,
-.hero-keyword.kw-pink.active {
+.hero-dimmed .hero-keyword.kw-pink:hover,
+.hero-dimmed .hero-keyword.kw-pink.active {
   color: #f472b6;
   text-shadow: 0 0 60px rgba(244, 114, 182, 0.15);
+}
+
+/* Name highlight dims slightly when statement is dimmed */
+.hero-dimmed .hero-name-highlight {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* Annotation text (bottom-right, monospace) */

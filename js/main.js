@@ -72,6 +72,7 @@ function initHeroKeywords(prefersReducedMotion) {
   const keywords = document.querySelectorAll('.hero-keyword');
   if (!keywords.length) return;
 
+  const statement = document.getElementById('heroStatement');
   const annotationText = document.getElementById('heroAnnotationText');
   const annotationIcon = document.getElementById('heroAnnotationIcon');
   const defaultAnnotation = 'AI automation, agentic workflows, and structured decision systems.';
@@ -98,6 +99,10 @@ function initHeroKeywords(prefersReducedMotion) {
       if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
       if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
 
+      // Dim everything except the hovered keyword
+      if (statement) statement.classList.add('hero-dimmed');
+      kw.classList.add('active');
+
       const annotation = kw.dataset.annotation;
       const kwClass = [...kw.classList].find(c => c.startsWith('kw-'));
       const color = colorMap[kwClass] || '#818cf8';
@@ -116,10 +121,16 @@ function initHeroKeywords(prefersReducedMotion) {
     });
 
     kw.addEventListener('mouseleave', () => {
+      kw.classList.remove('active');
+
       // Short delay before resetting — allows seamless keyword-to-keyword transition
       if (resetTimer) clearTimeout(resetTimer);
       resetTimer = setTimeout(() => {
         if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+
+        // Remove dim if no keyword is currently hovered
+        if (statement) statement.classList.remove('hero-dimmed');
+
         if (annotationText) {
           annotationText.style.opacity = '0';
           fadeTimer = setTimeout(() => {
