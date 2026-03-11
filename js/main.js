@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   initNavigation();
+  initHeroKeywords(prefersReducedMotion);
   initScrollReveal(prefersReducedMotion);
   initSideRail(prefersReducedMotion);
   initWorkShowcase();
@@ -61,6 +62,55 @@ function initNavigation() {
     mobileNav.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
+}
+
+
+/* ============================================
+   HERO KEYWORD CYCLING
+   ============================================ */
+function initHeroKeywords(prefersReducedMotion) {
+  const keywords = document.querySelectorAll('.hero-keyword');
+  if (!keywords.length) return;
+
+  const annotations = [
+    'AI automation, agentic workflows, research operations, and structured decision systems.',
+    'From consulting to forensic investigations to procurement — always shipping real deliverables.',
+    'Python, FastAPI, APIs, LLM integrations, and lightweight full-stack tooling.'
+  ];
+
+  const annotationText = document.getElementById('heroAnnotationText');
+  let currentIndex = 0;
+
+  function cycleKeyword() {
+    // Remove active from all
+    keywords.forEach(kw => kw.classList.remove('active'));
+
+    // Activate current
+    keywords[currentIndex].classList.add('active');
+
+    // Update annotation text with fade
+    if (annotationText) {
+      annotationText.style.opacity = '0';
+      setTimeout(() => {
+        annotationText.textContent = annotations[currentIndex] || annotations[0];
+        annotationText.style.opacity = '0.7';
+      }, 300);
+    }
+
+    currentIndex = (currentIndex + 1) % keywords.length;
+  }
+
+  if (prefersReducedMotion) {
+    // Just show all highlighted
+    keywords.forEach(kw => kw.classList.add('active'));
+    return;
+  }
+
+  // Start cycling after hero animation completes
+  setTimeout(() => {
+    cycleKeyword();
+    setInterval(cycleKeyword, 3000);
+  }, 2000);
 }
 
 

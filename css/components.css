@@ -3,66 +3,32 @@
    ============================================ */
 
 /* ============================================
-   HERO ENTRANCE ANIMATIONS
+   ANIMATIONS
    ============================================ */
 
-@keyframes heroFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes heroNameReveal {
-  from {
-    opacity: 0;
-    transform: translateY(60px);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes sideRailIn {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes subtlePulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+@keyframes heroStatementIn {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.anim-hero {
-  opacity: 0;
-  animation: heroFadeUp var(--duration-hero) var(--ease-premium) forwards;
-  animation-delay: calc(300ms + var(--anim-order) * var(--hero-stagger));
+@keyframes heroBottomIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Name lines get the more dramatic reveal */
-.hero-name-line.anim-hero {
-  animation-name: heroNameReveal;
-  animation-duration: var(--duration-cinematic);
+@keyframes annotationIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 
@@ -386,7 +352,7 @@
 
 
 /* ============================================
-   HERO
+   HERO — Serif Statement Style
    ============================================ */
 
 .hero {
@@ -394,59 +360,84 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-32) 0 var(--space-20);
+  padding: var(--space-32) 0 var(--space-16);
   position: relative;
 }
 
-.hero-status {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--color-text-tertiary);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  font-family: var(--font-mono);
-  margin-bottom: var(--space-10);
+/* The big serif italic statement */
+.hero-statement {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.13);
+  max-width: 1100px;
+  margin-bottom: var(--space-8);
+  opacity: 0;
+  animation: heroStatementIn 1.2s var(--ease-premium) 0.3s forwards;
 }
 
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  animation: pulseDot 2.5s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.hero-name {
-  margin-bottom: var(--space-6);
-}
-
-.hero-name-line {
-  display: block;
-  font-size: var(--text-hero);
-  font-weight: var(--weight-heavy);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tighter);
+/* Name always highlighted */
+.hero-name-highlight {
   color: var(--color-text);
+  font-weight: 700;
+  font-style: italic;
+  transition: color 0.6s var(--ease-out);
 }
 
-.hero-role {
-  font-size: clamp(var(--text-lg), 2.5vw, var(--text-xl));
-  color: var(--color-text-secondary);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-  margin-bottom: var(--space-5);
-  line-height: var(--leading-snug);
+/* Keyword highlights — dim by default, lit when active */
+.hero-keyword {
+  color: rgba(255, 255, 255, 0.13);
+  font-style: italic;
+  transition: color 0.6s var(--ease-out), text-shadow 0.6s var(--ease-out);
 }
 
-.hero-description {
-  font-size: var(--text-md);
-  color: var(--color-text-tertiary);
-  line-height: var(--leading-relaxed);
-  max-width: 520px;
-  margin-bottom: var(--space-10);
+.hero-keyword.active {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-shadow: 0 0 60px rgba(110, 123, 242, 0.15);
+}
+
+/* Annotation text (bottom-right, monospace) */
+.hero-annotation {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 340px;
+  margin-left: auto;
+  margin-bottom: var(--space-16);
+  opacity: 0;
+  animation: annotationIn 0.8s var(--ease-premium) 1.6s forwards;
+}
+
+.hero-annotation-icon {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.hero-annotation-text {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  line-height: 1.7;
+  letter-spacing: var(--tracking-wide);
+  opacity: 0.7;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+/* Hero bottom bar: actions + meta */
+.hero-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: heroBottomIn 0.8s var(--ease-premium) 2s forwards;
 }
 
 .hero-actions {
@@ -1318,7 +1309,21 @@
 
   .hero {
     min-height: calc(100vh - 60px);
-    padding: var(--space-24) 0 var(--space-16);
+    padding: var(--space-24) 0 var(--space-12);
+  }
+
+  .hero-statement {
+    font-size: clamp(1.8rem, 7vw, 3rem);
+  }
+
+  .hero-annotation {
+    margin-left: 0;
+    max-width: 280px;
+  }
+
+  .hero-bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .hero-meta {
