@@ -379,40 +379,37 @@
   animation: heroStatementIn 1.2s var(--ease-premium) 0.3s forwards;
 }
 
-/* Name always highlighted */
+/* Name always highlighted — fully white for readability */
 .hero-name-highlight {
-  color: var(--color-text);
+  color: #ffffff;
   font-weight: 700;
   font-style: italic;
-  transition: color 0.6s var(--ease-out);
 }
 
-/* Keyword highlights — dim by default, lit on hover with unique colors */
+/* Keyword highlights — dim by default, lit on hover with unique colors.
+   No font-weight change on hover to prevent layout shift / text reflow. */
 .hero-keyword {
   color: rgba(255, 255, 255, 0.13);
   font-style: italic;
   cursor: default;
-  transition: color 0.5s var(--ease-out), text-shadow 0.5s var(--ease-out);
+  transition: color 0.35s var(--ease-out), text-shadow 0.35s var(--ease-out);
 }
 
 .hero-keyword.kw-green:hover,
 .hero-keyword.kw-green.active {
   color: #34d399;
-  font-weight: 700;
   text-shadow: 0 0 60px rgba(52, 211, 153, 0.15);
 }
 
 .hero-keyword.kw-blue:hover,
 .hero-keyword.kw-blue.active {
   color: #818cf8;
-  font-weight: 700;
   text-shadow: 0 0 60px rgba(129, 140, 248, 0.15);
 }
 
 .hero-keyword.kw-pink:hover,
 .hero-keyword.kw-pink.active {
   color: #f472b6;
-  font-weight: 700;
   text-shadow: 0 0 60px rgba(244, 114, 182, 0.15);
 }
 

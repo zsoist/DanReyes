@@ -88,21 +88,27 @@ function initHeroKeywords(prefersReducedMotion) {
     return;
   }
 
+  // Debounce timer so rapid keyword-to-keyword hovers stay seamless
+  let resetTimer = null;
+  let fadeTimer = null;
+
   keywords.forEach(kw => {
     kw.addEventListener('mouseenter', () => {
+      // Cancel any pending reset — user moved to another keyword
+      if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
+      if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+
       const annotation = kw.dataset.annotation;
-      // Find which color class this keyword has
       const kwClass = [...kw.classList].find(c => c.startsWith('kw-'));
       const color = colorMap[kwClass] || '#818cf8';
 
-      // Update annotation with fade
       if (annotationText) {
         annotationText.style.opacity = '0';
-        setTimeout(() => {
+        fadeTimer = setTimeout(() => {
           annotationText.textContent = annotation || defaultAnnotation;
           annotationText.style.color = color;
           annotationText.style.opacity = '0.8';
-        }, 200);
+        }, 150);
       }
       if (annotationIcon) {
         annotationIcon.style.color = color;
@@ -110,18 +116,22 @@ function initHeroKeywords(prefersReducedMotion) {
     });
 
     kw.addEventListener('mouseleave', () => {
-      // Restore default
-      if (annotationText) {
-        annotationText.style.opacity = '0';
-        setTimeout(() => {
-          annotationText.textContent = defaultAnnotation;
-          annotationText.style.color = '';
-          annotationText.style.opacity = '0.7';
-        }, 200);
-      }
-      if (annotationIcon) {
-        annotationIcon.style.color = '';
-      }
+      // Short delay before resetting — allows seamless keyword-to-keyword transition
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+        if (annotationText) {
+          annotationText.style.opacity = '0';
+          fadeTimer = setTimeout(() => {
+            annotationText.textContent = defaultAnnotation;
+            annotationText.style.color = '';
+            annotationText.style.opacity = '0.7';
+          }, 150);
+        }
+        if (annotationIcon) {
+          annotationIcon.style.color = '';
+        }
+      }, 80);
     });
   });
 }
