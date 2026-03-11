@@ -419,7 +419,7 @@
   align-items: flex-start;
   gap: var(--space-3);
   max-width: 340px;
-  min-height: 3.6em;
+  min-height: 5.5em;
   margin-left: auto;
   margin-bottom: var(--space-16);
   opacity: 0;
@@ -1334,6 +1334,7 @@
   .hero-annotation {
     margin-left: 0;
     max-width: 280px;
+    min-height: 7em;
   }
 
   .hero-bottom {
