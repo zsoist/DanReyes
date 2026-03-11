@@ -387,17 +387,33 @@
   transition: color 0.6s var(--ease-out);
 }
 
-/* Keyword highlights — dim by default, lit when active */
+/* Keyword highlights — dim by default, lit on hover with unique colors */
 .hero-keyword {
   color: rgba(255, 255, 255, 0.13);
   font-style: italic;
-  transition: color 0.6s var(--ease-out), text-shadow 0.6s var(--ease-out);
+  cursor: default;
+  transition: color 0.5s var(--ease-out), text-shadow 0.5s var(--ease-out);
 }
 
-.hero-keyword.active {
-  color: var(--color-accent);
+.hero-keyword.kw-green:hover,
+.hero-keyword.kw-green.active {
+  color: #34d399;
   font-weight: 700;
-  text-shadow: 0 0 60px rgba(110, 123, 242, 0.15);
+  text-shadow: 0 0 60px rgba(52, 211, 153, 0.15);
+}
+
+.hero-keyword.kw-blue:hover,
+.hero-keyword.kw-blue.active {
+  color: #818cf8;
+  font-weight: 700;
+  text-shadow: 0 0 60px rgba(129, 140, 248, 0.15);
+}
+
+.hero-keyword.kw-pink:hover,
+.hero-keyword.kw-pink.active {
+  color: #f472b6;
+  font-weight: 700;
+  text-shadow: 0 0 60px rgba(244, 114, 182, 0.15);
 }
 
 /* Annotation text (bottom-right, monospace) */
@@ -413,20 +429,21 @@
 }
 
 .hero-annotation-icon {
-  color: var(--color-accent);
   font-size: var(--text-sm);
   line-height: 1.6;
   flex-shrink: 0;
+  color: var(--color-accent);
+  transition: color 0.4s var(--ease-out);
 }
 
 .hero-annotation-text {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--color-accent);
   line-height: 1.7;
   letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
   opacity: 0.7;
-  transition: opacity 0.4s var(--ease-out);
+  transition: opacity 0.4s var(--ease-out), color 0.4s var(--ease-out);
 }
 
 /* Hero bottom bar: actions + meta */

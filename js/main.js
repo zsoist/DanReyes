@@ -66,51 +66,64 @@ function initNavigation() {
 
 
 /* ============================================
-   HERO KEYWORD CYCLING
+   HERO KEYWORD HOVER
    ============================================ */
 function initHeroKeywords(prefersReducedMotion) {
   const keywords = document.querySelectorAll('.hero-keyword');
   if (!keywords.length) return;
 
-  const annotations = [
-    'AI automation, agentic workflows, research operations, and structured decision systems.',
-    'From consulting to forensic investigations to procurement — always shipping real deliverables.',
-    'Python, FastAPI, APIs, LLM integrations, and lightweight full-stack tooling.'
-  ];
-
   const annotationText = document.getElementById('heroAnnotationText');
-  let currentIndex = 0;
+  const annotationIcon = document.getElementById('heroAnnotationIcon');
+  const defaultAnnotation = 'AI automation, agentic workflows, and structured decision systems.';
 
-  function cycleKeyword() {
-    // Remove active from all
-    keywords.forEach(kw => kw.classList.remove('active'));
-
-    // Activate current
-    keywords[currentIndex].classList.add('active');
-
-    // Update annotation text with fade
-    if (annotationText) {
-      annotationText.style.opacity = '0';
-      setTimeout(() => {
-        annotationText.textContent = annotations[currentIndex] || annotations[0];
-        annotationText.style.opacity = '0.7';
-      }, 300);
-    }
-
-    currentIndex = (currentIndex + 1) % keywords.length;
-  }
+  // Color map matching the CSS classes
+  const colorMap = {
+    'kw-green': '#34d399',
+    'kw-blue': '#818cf8',
+    'kw-pink': '#f472b6'
+  };
 
   if (prefersReducedMotion) {
-    // Just show all highlighted
     keywords.forEach(kw => kw.classList.add('active'));
     return;
   }
 
-  // Start cycling after hero animation completes
-  setTimeout(() => {
-    cycleKeyword();
-    setInterval(cycleKeyword, 3000);
-  }, 2000);
+  keywords.forEach(kw => {
+    kw.addEventListener('mouseenter', () => {
+      const annotation = kw.dataset.annotation;
+      // Find which color class this keyword has
+      const kwClass = [...kw.classList].find(c => c.startsWith('kw-'));
+      const color = colorMap[kwClass] || '#818cf8';
+
+      // Update annotation with fade
+      if (annotationText) {
+        annotationText.style.opacity = '0';
+        setTimeout(() => {
+          annotationText.textContent = annotation || defaultAnnotation;
+          annotationText.style.color = color;
+          annotationText.style.opacity = '0.8';
+        }, 200);
+      }
+      if (annotationIcon) {
+        annotationIcon.style.color = color;
+      }
+    });
+
+    kw.addEventListener('mouseleave', () => {
+      // Restore default
+      if (annotationText) {
+        annotationText.style.opacity = '0';
+        setTimeout(() => {
+          annotationText.textContent = defaultAnnotation;
+          annotationText.style.color = '';
+          annotationText.style.opacity = '0.7';
+        }, 200);
+      }
+      if (annotationIcon) {
+        annotationIcon.style.color = '';
+      }
+    });
+  });
 }
 
 
