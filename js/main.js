@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initNavigation();
   initHeroKeywords(prefersReducedMotion);
+  initContactReveal(prefersReducedMotion);
   initScrollReveal(prefersReducedMotion);
   initSideRail(prefersReducedMotion);
   initWorkShowcase();
@@ -144,6 +145,86 @@ function initHeroKeywords(prefersReducedMotion) {
         }
       }, 80);
     });
+  });
+}
+
+
+/* ============================================
+   CONTACT REVEAL — Shatter button to expose info
+   ============================================ */
+function initContactReveal(prefersReducedMotion) {
+  const btn = document.getElementById('contactRevealBtn');
+  const particlesContainer = document.getElementById('contactParticles');
+  const revealed = document.getElementById('contactRevealed');
+  const wrap = btn ? btn.closest('.contact-reveal-wrap') : null;
+
+  if (!btn || !revealed) return;
+
+  // If reduced motion, just show everything immediately
+  if (prefersReducedMotion) {
+    btn.style.display = 'none';
+    revealed.classList.add('visible');
+    return;
+  }
+
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('shattering')) return;
+
+    // 1. Get button bounds for particle origin
+    const rect = btn.getBoundingClientRect();
+    const wrapRect = wrap.getBoundingClientRect();
+    const cx = rect.left - wrapRect.left + rect.width / 2;
+    const cy = rect.top - wrapRect.top + rect.height / 2;
+
+    // 2. Spawn particles from button center
+    const particleCount = 28;
+    const colors = ['#6e7bf2', '#818cf8', '#a5b4fc', '#f0f0f2', '#34d399'];
+
+    if (particlesContainer) {
+      particlesContainer.style.top = cy + 'px';
+      particlesContainer.style.left = cx + 'px';
+      particlesContainer.style.width = '0';
+      particlesContainer.style.height = '0';
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'contact-particle';
+
+        // Random direction, distance, size, speed
+        const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.6;
+        const distance = 60 + Math.random() * 140;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance - 30; // bias upward
+        const size = 3 + Math.random() * 5;
+        const duration = 0.6 + Math.random() * 0.5;
+        const delay = Math.random() * 0.15;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        particle.style.setProperty('--tx', tx + 'px');
+        particle.style.setProperty('--ty', ty + 'px');
+        particle.style.setProperty('--size', size + 'px');
+        particle.style.setProperty('--duration', duration + 's');
+        particle.style.setProperty('--delay', delay + 's');
+        particle.style.setProperty('--color', color);
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // 3. Trigger button shatter
+    btn.classList.add('shattering');
+    if (wrap) wrap.classList.add('shattered');
+
+    // 4. After shatter completes, hide button and reveal content
+    setTimeout(() => {
+      btn.style.display = 'none';
+      revealed.classList.add('visible');
+
+      // Clean up particles after they've faded
+      setTimeout(() => {
+        if (particlesContainer) particlesContainer.innerHTML = '';
+      }, 600);
+    }, 500);
   });
 }
 
